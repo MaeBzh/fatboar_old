@@ -1,0 +1,53 @@
+version: '3.8'
+
+services: 
+    # reverse-proxy:
+    #     image: traefik: latest
+    #     command: --providers.docker=true --providers.docker.network=apps-nw --entrypoints.apps.address=:80
+    #     volumes:
+    #         - /var/run/docker.sock:/var/run/docker.sock
+    #     networks: 
+    #         - apps-nw
+    #     ports: 
+    #         - "80:80"
+
+    db:
+        image: mariadb:latest
+        restart: always        
+        environment: 
+            - 'MYSQL_USER= MaeBzh'
+            - 'MYSQL_DATABASE= fatboar'
+            - 'MYSQL_PASSWORD= @Doudou1503'
+#- 'MYSQL_PASSWORD_FILE= /run/secrets/db-password'
+        secrets:
+            - db-password
+        networks: 
+            - db-nw
+
+    front: 
+        build: 
+            context: .
+            dockerfile: ./fatboar-concours/Dockerfile
+        networks:
+            - apps-nw
+        # labels: 
+        #     - "traefik.enable=true"
+        #     - "traefik.http.routers.traefik.entrypoints=apps"
+    
+    api:
+        build: 
+            context: .
+            dockerfile: ./fatboar-api/Dockerfile
+        depends_on:
+            - db
+        networks:
+            - apps-nw
+            - db-nw
+
+networks:
+    apps-nw:
+    db-nw:
+    
+secrets:
+    db-password:
+        file: ./secrets_db-password.txt
