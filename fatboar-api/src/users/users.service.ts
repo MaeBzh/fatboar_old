@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Connection, Repository, UpdateResult } from "typeorm";
+import { Repository, UpdateResult } from "typeorm";
 import { User } from "./user.entity";
 import { UserDto } from "./userDto";
 
@@ -8,7 +8,6 @@ import { UserDto } from "./userDto";
 export class UsersService {
 
   constructor(
-    private connection: Connection,
     @InjectRepository(User)
     private usersRepo: Repository<User>,
   ) { }
@@ -26,14 +25,10 @@ export class UsersService {
   }
 
   create(userDto: UserDto): Promise<User> {
-    return this.connection.transaction(manager => {
-      return this.usersRepo.save(userDto);
-    })
+    return this.usersRepo.save(userDto);
   }
 
   update(id: number, userDto: UserDto): Promise<UpdateResult> {
-    return this.connection.transaction(() => {
-      return this.usersRepo.update(id, userDto);
-    })
+    return this.usersRepo.update(id, userDto);
   }
 }
