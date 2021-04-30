@@ -44,9 +44,7 @@ services:
             - ./fatboar-concours:/usr/src/app/fatboar-concours
         networks:
             - api 
-        command: sh -c "npm install -g @angular/cli@7.3.9 \
-        && npm install \
-        && ng serve --host 0.0.0.0 --disable-host-check"
+        command: sh -c "npm install -g @angular/cli@7.3.9 && npm install && ng serve --host 0.0.0.0 --disable-host-check"
 
 networks:
     api:
