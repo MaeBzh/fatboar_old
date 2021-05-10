@@ -12,6 +12,7 @@ services:
             - mariadb:/var/lib/mysql
         networks: 
             - mariadb
+        profiles: ["dev", "prod"]
 
     api:
         image: node:latest
@@ -30,6 +31,7 @@ services:
         networks:
             - api
             - mariadb
+        profiles: ["dev", "prod", "api"]
         command: sh -c "npm install
          && npm install -g @nestjs/cli ts-node \
          && npm install --save @nestjs/typeorm typeorm mysql2 \
@@ -46,6 +48,7 @@ services:
             - ./fatboar-concours:/usr/src/app/fatboar-concours
         networks:
             - api 
+        profiles: ["dev", "prod", "frontend"]
         command: sh -c "npm install -g @angular/cli@7.3.9 && npm install && ng serve --host 0.0.0.0 --disable-host-check"
 
 networks:
