@@ -12,7 +12,7 @@ services:
             - mariadb:/var/lib/mysql
         networks: 
             - mariadb
-        profiles: ["dev", "prod"]
+        profiles: ["dev", "prod", "api"]
 
     api:
         image: node:latest
