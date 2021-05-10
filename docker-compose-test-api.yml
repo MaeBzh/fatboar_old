@@ -30,7 +30,7 @@ services:
         networks:
             - api
             - mariadb
-        command: sh -c "npm install
+        command: sh -c "ls && npm install
          && npm install -g @nestjs/cli ts-node \
          && npm install --save @nestjs/typeorm typeorm mysql2 \
          && npm i --save-dev @nestjs/testing"    
