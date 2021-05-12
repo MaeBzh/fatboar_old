@@ -20,7 +20,7 @@ jobs:
         token: ${{ secrets.JENKINS_TOKEN }}
         job: "fatboar-api" 
     - name: create a release
-    - id: release
+      id: release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       uses: rymndhng/release-on-push-action@master
