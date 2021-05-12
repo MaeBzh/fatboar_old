@@ -10,7 +10,6 @@ on:
 
 jobs:
   build:
-    name: Build
     runs-on: ubuntu-latest
     steps:
     - name: trigger Jenkins Job
@@ -20,19 +19,13 @@ jobs:
         user: ${{ secrets.JENKINS_USER }}
         token: ${{ secrets.JENKINS_TOKEN }}
         job: "fatboar-api" 
-    - name: release-on-push
+    - name: tag release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       uses: rymndhng/release-on-push-action@master
       with:
-        bump_version_scheme: minor
-    - name: deploy
-      uses: easingthemes/ssh-deploy@v2.1.5
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        ARGS: "-rltgoDzvO"
-        SOURCE: "dist/"
-        REMOTE_HOST: ${{ secrets.SSH_HOST }}
-        REMOTE_USER: ${{ secrets.SSH_USER }}
-        EXCLUDE: "/dist/, /node_modules/"
+        bump_version_scheme: minor 
+
+
+  
 
