@@ -19,13 +19,16 @@ jobs:
         user: ${{ secrets.JENKINS_USER }}
         token: ${{ secrets.JENKINS_TOKEN }}
         job: "fatboar-api" 
-    - name: tag release
+    - name: create a release
+    - id: release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       uses: rymndhng/release-on-push-action@master
       with:
-        bump_version_scheme: minor 
-
-
-  
-
+        bump_version_scheme: minor
+    - name: Check Output Parameters
+      run: |
+          echo "Got tag name ${{ steps.release.outputs.tag_name }}"
+          echo "Got release version ${{ steps.release.outputs.version }}" 
+          echo " url ${{ steps.release.outputs.url }}"
+        
