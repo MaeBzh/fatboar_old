@@ -1,7 +1,3 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { Connection, Repository } from "typeorm";
-import { User } from "./user.entity";
 import { UsersController } from "./users.controller";
 import { UsersService } from "./users.service";
 
