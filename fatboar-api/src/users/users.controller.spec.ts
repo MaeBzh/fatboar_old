@@ -15,7 +15,7 @@ describe('UsersController', () => {
             const users = [
                 {
                 id: 1,
-                firstname: 'Jojo',
+                firstname: 'Toto',
                 lastname: 'lepoireau',
                 email: 'test@user.com',
                 phone: '1234567890'
