@@ -9,20 +9,38 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  tests:
     runs-on: ubuntu-latest
     steps:
-    - name: trigger Jenkins Job
+    - name: Trigger Jenkins Job for testing
       uses: appleboy/jenkins-action@master
       with:
         url: ${{ secrets.JENKINS_URL }}
         user: ${{ secrets.JENKINS_USER }}
         token: ${{ secrets.JENKINS_TOKEN }}
         job: "fatboar-api" 
-    - name: create a release
-      id: release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      uses: rymndhng/release-on-push-action@master
-      with:
-        bump_version_scheme: minor      
+  release:
+    runs-on: ubuntu-latest
+    needs: tests
+    if: github.ref == 'refs/heads/master' 
+    steps:
+      - name: Create a release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: rymndhng/release-on-push-action@master
+        with:
+          bump_version_scheme: minor
+  deploy:
+    runs-on: ubuntu-latest
+    needs: release
+    if: github.ref == 'refs/heads/master'    
+    steps:
+      - name: Deploy on server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            curl -H "Accept:application/vnd.github.v3+json" https://api.github.com/repos/octocat/hello-world/releases/assets/${{ steps.release_asset.outputs.id }}
+            ls
